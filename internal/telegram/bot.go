@@ -12,8 +12,13 @@ type Bot struct {
 	client *tgbot.Bot
 }
 
-func New(c config.Telegram, h *Handler) (*Bot, error) {
-	client, err := tgbot.New(c.Token, tgbot.WithDefaultHandler(h.Handle))
+func NewBot(c config.Telegram, h *Handler) (*Bot, error) {
+	client, err := tgbot.New(
+		c.Token,
+		tgbot.WithDefaultHandler(h.Handle),
+		tgbot.WithWorkers(1),
+		tgbot.WithNotAsyncHandlers(),
+	)
 	if err != nil {
 		return nil, err
 	}

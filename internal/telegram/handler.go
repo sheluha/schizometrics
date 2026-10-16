@@ -6,38 +6,48 @@ import (
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
+	"github.com/sheluha/schizometrics/internal/buffer"
+	"github.com/sheluha/schizometrics/internal/model"
 )
 
-/*
-todo
-1) Кольцевой буффер для чата
-2) Отправка в канал на обработку
-*/
+type Handler struct {
+	bm buffer.Manager
+}
 
-type Handler struct{}
+func NewHandler(bm buffer.Manager) *Handler {
+	return &Handler{
+		bm,
+	}
+}
 
 func (h *Handler) Handle(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	if update.Message == nil {
 		return
 	}
-
 	msg := update.Message
+	if msg.Chat.Type != "group" && msg.Chat.Type != "supergroup" {
+		return
+	}
+	if msg.From == nil || msg.From.IsBot {
+		return
+	}
+	text := msg.Text
+	if text == "" {
+		return
+	}
 
 	log.Printf(
 		"chat=%d user=%d message=%d text=%q",
 		msg.Chat.ID,
 		msg.From.ID,
 		msg.ID,
-		msg.Text,
+		text,
 	)
-
-	_, err := b.SendMessage(ctx, &bot.SendMessageParams{
-		ChatID: msg.Chat.ID,
-		Text:   "Иди нахуй",
+	h.bm.ProcessMessage(ctx, model.Message{
+		UserId:  msg.From.ID,
+		ChatId:  msg.Chat.ID,
+		Message: text,
 	})
-	if err != nil {
-		log.Print(err)
-	}
 
 }

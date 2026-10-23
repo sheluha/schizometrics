@@ -44,9 +44,8 @@ func (h *Handler) Handle(ctx context.Context, b *bot.Bot, update *models.Update)
 		msg.ID,
 		text,
 	)
-	h.bm.ProcessMessage(ctx, model.Message{
+	h.bm.ProcessMessage(ctx, msg.Chat.ID, msg.ID, model.Message{
 		UserId:  msg.From.ID,
-		ChatId:  msg.Chat.ID,
 		Message: text,
 	})
 

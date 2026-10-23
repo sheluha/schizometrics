@@ -12,6 +12,7 @@ import (
 	"github.com/sheluha/schizometrics/internal/config"
 	"github.com/sheluha/schizometrics/internal/llm"
 	"github.com/sheluha/schizometrics/internal/model"
+	"github.com/sheluha/schizometrics/internal/rules"
 	"github.com/sheluha/schizometrics/internal/telegram"
 )
 
@@ -38,8 +39,11 @@ func main() {
 		log.Fatal("Cannot initialize telegram bot", err)
 	}
 
+	r := rules.LoadRules("./rules")
+	e := rules.NewRulesEngine(r)
+
 	client := llm.NewClient(cfg.Llm)
-	ma := analyze.NewMessageAnalyzer(client)
+	ma := analyze.NewMessageAnalyzer(client, e, bot)
 
 	for range 4 {
 		worker := analyze.NewAnalyzeWorker(jobs, ma)

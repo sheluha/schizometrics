@@ -19,8 +19,7 @@ func NewBufferManager(ch chan<- model.AnalysisJob) Manager {
 	}
 }
 
-func (b *Manager) ProcessMessage(ctx context.Context, m model.Message) {
-	chatId := m.ChatId
+func (b *Manager) ProcessMessage(ctx context.Context, chatId int64, messageId int, m model.Message) {
 	ring, ok := b.chatBufferMap[chatId]
 	if !ok {
 		log.Printf("Buffer created for chat %d not found", chatId)
@@ -29,8 +28,10 @@ func (b *Manager) ProcessMessage(ctx context.Context, m model.Message) {
 	}
 
 	job := model.AnalysisJob{
-		Target:  m,
-		Context: ring.AllValues(),
+		Target:    m,
+		Context:   ring.AllValues(),
+		ChatId:    chatId,
+		MessageId: messageId,
 	}
 
 	ring.Add(m)

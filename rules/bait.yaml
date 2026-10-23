@@ -1,0 +1,15 @@
+id: bait
+enabled: true
+priority: 100
+
+weights:
+  provocative_framing: 0.6
+  causal_oversimplification: 0.2
+  topic_persistence: 0.4
+  position_revision: 0.3
+  irritation: 0.3
+  humor_irony: 0.5
+
+threshold: 0.9
+
+sticker: CAACAgIAAxkBAAEHzTxq25kXA1sP0E-HLvpQ6MP-5GYmzwACZq0AAq8rcUihxWZrbbYrID0E

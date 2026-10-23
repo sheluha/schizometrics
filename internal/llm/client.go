@@ -22,20 +22,17 @@ func NewClient(llm config.Llm) *Client {
 	return &Client{
 		config: llm,
 		client: &http.Client{
-			Timeout: 5 * time.Second,
+			Timeout: 10 * time.Second,
 		},
 	}
 }
 
-func (c *Client) SendRequest(ctx context.Context, state string, questions map[string]Question) (*Response, error) {
+func (c *Client) SendRequest(ctx context.Context, state string, questions map[Feature]Question) (*Response, error) {
 	payload := Request{
 		Model:     "clef-flash",
 		State:     state,
 		Questions: questions,
 	}
-
-	pretty, _ := json.MarshalIndent(payload, "", "  ")
-	log.Printf("Request: %s\n", string(pretty))
 
 	body, err := json.Marshal(payload)
 	if err != nil {

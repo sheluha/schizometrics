@@ -7,9 +7,9 @@ type Question struct {
 }
 
 type Request struct {
-	Model     string              `json:"model"`
-	State     string              `json:"state"`
-	Questions map[string]Question `json:"questions"`
+	Model     string               `json:"model"`
+	State     string               `json:"state"`
+	Questions map[Feature]Question `json:"questions"`
 }
 
 type Answer struct {
@@ -29,7 +29,37 @@ type Usage struct {
 }
 
 type Response struct {
-	Model   string            `json:"model"`
-	Answers map[string]Answer `json:"answers"`
-	Usage   Usage             `json:"usage"`
+	Model   string             `json:"model"`
+	Answers map[Feature]Answer `json:"answers"`
+	Usage   Usage              `json:"usage"`
 }
+
+type Feature string
+
+const (
+	FeatureInformationRequest       Feature = "information_request"
+	FeatureArgumentSupport          Feature = "argument_support"
+	FeatureExpressedUncertainty     Feature = "expressed_uncertainty"
+	FeatureConcession               Feature = "concession"
+	FeatureHumorIrony               Feature = "humor_irony"
+	FeatureIrritation               Feature = "irritation"
+	FeaturePersonalAttack           Feature = "personal_attack"
+	FeatureProvocativeFraming       Feature = "provocative_framing"
+	FeatureCategoricalTone          Feature = "categorical_tone"
+	FeatureCondescension            Feature = "condescension"
+	FeatureLogicalGap               Feature = "logical_gap"
+	FeatureOvergeneralization       Feature = "overgeneralization"
+	FeatureContradiction            Feature = "contradiction"
+	FeatureCausalOversimplification Feature = "causal_oversimplification"
+	FeatureSemanticIncongruity      Feature = "semantic_incongruity"
+	FeatureGroupDerogation          Feature = "group_derogation"
+	FeatureHarmApproval             Feature = "harm_approval"
+	FeatureOpponentDistortion       Feature = "opponent_distortion"
+	FeatureObjectionEvasion         Feature = "objection_evasion"
+	FeaturePositionRevision         Feature = "position_revision"
+	FeatureArgumentRepetition       Feature = "argument_repetition"
+	FeatureDetailFixation           Feature = "detail_fixation"
+	FeatureLiteralInterpretation    Feature = "literal_interpretation"
+	FeatureTopicPersistence         Feature = "topic_persistence"
+	FeatureContextInsufficient      Feature = "context_insufficient"
+)
